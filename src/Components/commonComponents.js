@@ -42,14 +42,15 @@ export const TextBox = styled.input`
  height: 40px;
  padding: 10px;
  margin: 20px 0px;
- background-color: white;
  transition: 0.5s;
  color: black;
+ color: white;
+ border-bottom: 2px solid white;
  &:hover {
-  box-shadow: 3px 5px 7px gray;
+  box-shadow: 5px 7px 9px gray;
  }
 
  &:focus {
-  box-shadow: 3px 5px 7px gray;
+  box-shadow: 5px 7px 9px gray;
  }
 `;

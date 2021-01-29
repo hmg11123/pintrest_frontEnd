@@ -67,10 +67,16 @@ const MM01Presenter = ({
       닉네임 확인
      </AddressBtn>
     </Wrapper>
-    <TextBox width={"300px"} {...newPassWord} placeholder="비밀번호"></TextBox>
+    <TextBox
+     width={"300px"}
+     type="password"
+     {...newPassWord}
+     placeholder="비밀번호"
+    ></TextBox>
     <TextBox
      width={"300px"}
      {...checkPassWord}
+     type="password"
      placeholder="비밀번호 확인"
     ></TextBox>
     <TextBox width={"300px"} {...newName} placeholder="이름"></TextBox>

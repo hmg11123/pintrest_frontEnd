@@ -27,7 +27,12 @@ const MM02Presenter = ({ inputEmail, inputPassWord, loginHandler }) => {
   <Wrapper>
    <TitleWrapper>로그인</TitleWrapper>
    <TextBox width={"300px"} {...inputEmail} placeholder="이메일"></TextBox>
-   <TextBox width={"300px"} {...inputPassWord} placeholder="비밀번호"></TextBox>
+   <TextBox
+    width={"300px"}
+    {...inputPassWord}
+    type="password"
+    placeholder="비밀번호"
+   ></TextBox>
    <LoginBtn onClick={loginHandler}>로그인</LoginBtn>
   </Wrapper>
  );

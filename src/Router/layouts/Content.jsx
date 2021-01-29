@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 import MM00 from "../../Router/MM/MM00";
 import MM01 from "../../Router/MM/MM01";
 import MM02 from "../../Router/MM/MM02";
+import MM03 from "../../Router/MM/MM03";
 
 const WholeWrapper = styled.div`
  width: 100%;
@@ -17,6 +18,7 @@ const Content = () => {
    <Route exact path="/" component={MM00}></Route>
    <Route exact path="/signUp" component={MM01}></Route>
    <Route exact path="/signIn" component={MM02}></Route>
+   <Route exact path="/myPage/:id" component={MM03}></Route>
   </WholeWrapper>
  );
 };

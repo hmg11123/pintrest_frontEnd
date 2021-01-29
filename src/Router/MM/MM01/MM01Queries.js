@@ -15,6 +15,12 @@ export const GET_ALL_USER = gql`
  }
 `;
 
+export const CHECK_USER_NICK_NAME = gql`
+ mutation checkUserNickName($nickName: String!) {
+  checkUserNickName(nickName: $nickName)
+ }
+`;
+
 export const GET_ALL_USER_LENGTH = gql`
  query getAllUserlength {
   getAllUserlength
@@ -31,6 +37,7 @@ export const CREATE_USER = gql`
   $detailAddress: String!
   $zoneCode: String!
   $nickName: String!
+  $birth: String!
  ) {
   createUser(
    name: $name
@@ -41,6 +48,7 @@ export const CREATE_USER = gql`
    detailAddress: $detailAddress
    zoneCode: $zoneCode
    nickName: $nickName
+   birth: $birth
   )
  }
 `;

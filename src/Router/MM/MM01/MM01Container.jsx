@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import MM01Presenter from "./MM01Presenter";
-import { CREATE_USER, GET_ALL_USER_LENGTH, GET_ALL_USER } from "./MM01Queries";
+import {
+ CREATE_USER,
+ GET_ALL_USER_LENGTH,
+ GET_ALL_USER,
+ CHECK_USER_NICK_NAME,
+} from "./MM01Queries";
 import useInput from "../../../Hooks/useInput";
 import { toast } from "react-toastify";
 
@@ -32,21 +37,25 @@ const MM01Container = ({ history }) => {
 
  const userlength = userlengthData ? userlengthData.getAllUserlength : "sfa";
  const [createUserMutation] = useMutation(CREATE_USER);
+ const [checkUserNickNameMutation] = useMutation(CHECK_USER_NICK_NAME);
 
  const moveLinkHandler = (link) => {
   history.push(`/${link}`);
  };
 
- const nickNameCheckHandler = () => {
-  for (let i = 0; i < userlength; i++) {
-   if (newNickName !== userDatum.nickName) {
-    setCheckNickName(true);
-    toast.info("사용가능한 닉네임입니다");
-   } else {
-    setCheckNickName(false);
-    toast.error("닉네임이 존재합니다");
-    return;
-   }
+ const nickNameCheckHandler = async () => {
+  const { data } = await checkUserNickNameMutation({
+   variables: {
+    nickName: newNickName.value,
+   },
+  });
+  if (data.checkUserNickName) {
+   toast.info("사용가능한 닉네임 입니다.");
+   setCheckNickName(true);
+  } else {
+   toast.error("사용불가한 닉네임 입니다.");
+   setCheckNickName(false);
+   newNickName.setValue("");
   }
  };
 
@@ -57,6 +66,7 @@ const MM01Container = ({ history }) => {
   }
   if (newPassWord.value !== checkPassWord.value) {
    toast.error("비밀번호가 다릅니다");
+   return;
   }
   if (newName.value === "") {
    toast.error("이름은 필수 값입니다");
@@ -93,14 +103,14 @@ const MM01Container = ({ history }) => {
     mobile: newMobile.value,
     birth: newBirth.value,
     address: newAddress.value,
-    detailAddress: newAddress.value,
+    detailAddress: newDetailAddress.value,
     zoneCode: newZoneCode.value,
     nickName: newNickName.value,
    },
   });
   if (data) {
    toast.info("회원가입에 성공하였습니다.");
-   moveLinkHandler("login");
+   moveLinkHandler("signIn");
   } else {
    toast.error("회원가입에 실패하였습니다.");
   }

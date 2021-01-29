@@ -1,6 +1,7 @@
 import React from "react";
 import { Wrapper } from "../../Components/commonComponents";
 import styled from "styled-components";
+import { toast } from "react-toastify";
 
 const SearchBox = styled.input`
  outline: none;
@@ -37,10 +38,15 @@ const Header = ({ history }) => {
  const moveLinkHandler = (link) => {
   history.push(`/${link}`);
  };
+ const logout = (link) => {
+  history.push(`/${link}`);
+  sessionStorage.removeItem("login");
+  toast.info("로그아웃하셧습니다.");
+ };
  return (
   <Wrapper bc={`black`} color={`white`} heigth={`150px`} dr={`row`}>
    <Wrapper width={`25%`} onClick={() => moveLinkHandler("")}>
-    로고?
+    로고?f
    </Wrapper>
    <Wrapper width={`50%`}>
     <SearchBox
@@ -49,8 +55,27 @@ const Header = ({ history }) => {
     ></SearchBox>
    </Wrapper>
    <Wrapper width={`25%`} dr={`row`}>
-    <LoginBtn onClick={() => moveLinkHandler("signIn")}>로그인</LoginBtn>
-    <LoginBtn onClick={() => moveLinkHandler("signUp")}>회원가입</LoginBtn>
+    {window.sessionStorage.getItem("login") ? (
+     <Wrapper dr={`row`}>
+      <LoginBtn
+       onClick={() =>
+        moveLinkHandler(
+         `myPage/${
+          JSON.parse(sessionStorage.getItem("login")).getUser.userData._id
+         }`
+        )
+       }
+      >
+       마이페이지
+      </LoginBtn>
+      <LoginBtn onClick={() => logout("")}>로그아웃</LoginBtn>
+     </Wrapper>
+    ) : (
+     <Wrapper dr={`row`}>
+      <LoginBtn onClick={() => moveLinkHandler("signIn")}>로그인</LoginBtn>
+      <LoginBtn onClick={() => moveLinkHandler("signUp")}>회원가입</LoginBtn>
+     </Wrapper>
+    )}
    </Wrapper>
   </Wrapper>
  );
