@@ -66,6 +66,8 @@ const MM03Presenter = ({
  updateUserHandler,
  deleteUserHandler,
  _isDialogOpenToggle,
+ moveLinkHandler,
+ passWordHandler,
  isDialogOpen,
 }) => {
  return (
@@ -156,6 +158,7 @@ const MM03Presenter = ({
     </Wrapper>
     <Wrapper dr={`row`} margin={`50px 0px 100px 0px`}>
      <ClickBtn onClick={() => _isDialogOpenToggle()}>회원정보수정</ClickBtn>
+     <ClickBtn onClick={() => passWordHandler()}>비밀번호변경</ClickBtn>
      <ClickBtn onClick={() => deleteUserHandler()}>회원탈퇴</ClickBtn>
     </Wrapper>
    </Wrapper>

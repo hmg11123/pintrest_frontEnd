@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MM03Presenter from "./MM03Presenter";
-import { UPDATE_USER, DELETE_USER } from "./MM03Queries";
+import { UPDATE_USER, DELETE_USER, CHECKCODE_USER } from "./MM03Queries";
 import { useMutation } from "react-apollo-hooks";
 import useInput from "../../../Hooks/useInput";
 import { toast } from "react-toastify";
@@ -18,6 +18,7 @@ const MM03Container = ({ history, match }) => {
 
  const [updateUserMutation] = useMutation(UPDATE_USER);
  const [deleteUserMutation] = useMutation(DELETE_USER);
+ const [sendCheckCodeMutation] = useMutation(CHECKCODE_USER);
 
  const moveLinkHandler = (link) => {
   history.push(`/${link}`);
@@ -46,6 +47,19 @@ const MM03Container = ({ history, match }) => {
    toast.error("정보수정을 실패하셨습니다");
   }
  };
+ console.log(
+  JSON.parse(sessionStorage.getItem("login")).getUser.userData.email
+ );
+
+ const passWordHandler = async () => {
+  const { data } = await sendCheckCodeMutation({
+   variables: {
+    email: JSON.parse(sessionStorage.getItem("login")).getUser.userData.email,
+   },
+  });
+  console.log(data);
+  moveLinkHandler("chagePass");
+ };
 
  const deleteUserHandler = async () => {
   const { data } = await deleteUserMutation({
@@ -54,9 +68,9 @@ const MM03Container = ({ history, match }) => {
    },
   });
   if (data) {
+   window.sessionStorage.removeItem("login");
    toast.info("계정을 삭제하셨습니다.");
    moveLinkHandler("signIn");
-   sessionStorage.removeItem("login");
   } else {
    toast.error("계정삭제를 실패하셨습니다");
   }
@@ -104,7 +118,9 @@ const MM03Container = ({ history, match }) => {
    updateZoneCode={updateZoneCode}
    updateBirth={updateBirth}
    updateUserHandler={updateUserHandler}
+   passWordHandler={passWordHandler}
    deleteUserHandler={deleteUserHandler}
+   moveLinkHandler={moveLinkHandler}
    _isDialogOpenToggle={_isDialogOpenToggle}
    isDialogOpen={isDialogOpen}
   ></MM03Presenter>

@@ -31,3 +31,9 @@ export const DELETE_USER = gql`
   deleteUser(id: $id)
  }
 `;
+
+export const CHECKCODE_USER = gql`
+ mutation checkCodeUser($email: String!) {
+  checkCodeUser(email: $email)
+ }
+`;
