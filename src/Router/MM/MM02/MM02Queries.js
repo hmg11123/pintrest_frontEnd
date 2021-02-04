@@ -11,6 +11,7 @@ export const GET_USER = gql`
     birth
     mobile
     address
+    profileImage
     detailAddress
     zoneCode
     nickName

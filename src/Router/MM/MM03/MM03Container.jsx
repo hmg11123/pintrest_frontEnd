@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import MM03Presenter from "./MM03Presenter";
-import { UPDATE_USER, DELETE_USER, CHECKCODE_USER } from "./MM03Queries";
+import {
+ UPDATE_USER,
+ DELETE_USER,
+ CHECKCODE_USER,
+ UPDATE_PROFILEIMG,
+} from "./MM03Queries";
 import { useMutation } from "react-apollo-hooks";
 import useInput from "../../../Hooks/useInput";
+import storageRef from "../../../firebase";
 import { toast } from "react-toastify";
 
 const MM03Container = ({ history, match }) => {
@@ -15,13 +21,65 @@ const MM03Container = ({ history, match }) => {
  const updateZoneCode = useInput("");
  const updateBirth = useInput("");
  const [isDialogOpen, setIsDialogOpen] = useState(false);
+ const [imagePath, setImagePath] = useState(
+  `${JSON.parse(sessionStorage.getItem("login")).getUser.userData.profileImage}`
+ );
+ const [chageBtn, setChageBtn] = useState(false);
 
  const [updateUserMutation] = useMutation(UPDATE_USER);
  const [deleteUserMutation] = useMutation(DELETE_USER);
  const [sendCheckCodeMutation] = useMutation(CHECKCODE_USER);
+ const [updateProfileImgMutation] = useMutation(UPDATE_PROFILEIMG);
 
  const moveLinkHandler = (link) => {
   history.push(`/${link}`);
+ };
+
+ const fileChangeHandler = async (e) => {
+  const originFile = e.target.files[0];
+  const originFileName = e.target.files[0].name;
+
+  const D = new Date();
+
+  const year = D.getFullYear() + "";
+  const month = D.getMonth() + 1 + "";
+  const date = D.getDate() + "";
+  const hour = D.getHours() + "";
+  const min = D.getMinutes() + "";
+  const sec = D.getSeconds() + "";
+
+  const suffix = year + month + date + hour + min + sec;
+
+  const uploadFileName = originFileName + suffix;
+
+  try {
+   const storage = await storageRef.child(`User/profileImg/${uploadFileName}`);
+
+   await storage.put(originFile);
+   const url = await storage.getDownloadURL();
+
+   await setChageBtn(true);
+   await setImagePath(url);
+   await toast.info("사진이 추가되었습니다");
+  } catch (e) {}
+ };
+
+ const uploadProfileImg = async () => {
+  console.log("sFDasfdas", imagePath);
+  const { data } = await updateProfileImgMutation({
+   variables: {
+    id: match.params.id,
+    profileImage: imagePath,
+   },
+  });
+  if (data.updateProfileImg) {
+   toast.info("사진이 변경되었습니다");
+   sessionStorage.removeItem("login");
+   moveLinkHandler("signIn");
+   await setChageBtn(false);
+  } else {
+   toast.error("변경에 실패하였습니다");
+  }
  };
 
  const updateUserHandler = async () => {
@@ -47,10 +105,6 @@ const MM03Container = ({ history, match }) => {
    toast.error("정보수정을 실패하셨습니다");
   }
  };
- console.log(
-  JSON.parse(sessionStorage.getItem("login")).getUser.userData.email
- );
-
  const passWordHandler = async () => {
   const { data } = await sendCheckCodeMutation({
    variables: {
@@ -106,7 +160,7 @@ const MM03Container = ({ history, match }) => {
    JSON.parse(sessionStorage.getItem("login")).getUser.userData.birth
   );
  }, []);
-
+ console.log(imagePath);
  return (
   <MM03Presenter
    updateNickName={updateNickName}
@@ -115,14 +169,18 @@ const MM03Container = ({ history, match }) => {
    updateMobile={updateMobile}
    updateAddress={updateAddress}
    updateDetailAddress={updateDetailAddress}
+   imagePath={imagePath}
+   fileChangeHandler={fileChangeHandler}
    updateZoneCode={updateZoneCode}
    updateBirth={updateBirth}
    updateUserHandler={updateUserHandler}
+   uploadProfileImg={uploadProfileImg}
    passWordHandler={passWordHandler}
    deleteUserHandler={deleteUserHandler}
    moveLinkHandler={moveLinkHandler}
    _isDialogOpenToggle={_isDialogOpenToggle}
    isDialogOpen={isDialogOpen}
+   chageBtn={chageBtn}
   ></MM03Presenter>
  );
 };

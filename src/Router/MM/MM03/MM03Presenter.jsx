@@ -1,5 +1,12 @@
 import React from "react";
-import { Wrapper, TitleWrapper } from "../../../Components/commonComponents";
+import {
+ Wrapper,
+ TitleWrapper,
+ OriginFileBtn,
+ ProfileImgBox,
+ PushImgBtn,
+ DialogPushImgBtn,
+} from "../../../Components/commonComponents";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -64,97 +71,124 @@ const MM03Presenter = ({
  updateZoneCode,
  updateBirth,
  updateUserHandler,
+ imagePath,
+ fileChangeHandler,
  deleteUserHandler,
  _isDialogOpenToggle,
  moveLinkHandler,
  passWordHandler,
  isDialogOpen,
+ uploadProfileImg,
+ chageBtn,
 }) => {
  return (
   <Wrapper>
    <TitleWrapper>마이페이지</TitleWrapper>
    <Wrapper>
-    <Wrapper>
-     <Wrapper dr={`row`}>
-      <Wrapper width="100px">닉네임 : </Wrapper>
-      <MyDateBox
-       width={"200px"}
-       {...updateNickName}
-       type="text"
-       placeholder="닉네임"
-       readOnly
-      ></MyDateBox>
+    <Wrapper dr={`row`}>
+     <Wrapper width={`25%`}></Wrapper>
+     <Wrapper width={`25%`} margin={`0px 0px 500px 0px`}>
+      <ProfileImgBox src={imagePath} />
+      {chageBtn === false ? (
+       <Wrapper>
+        <OriginFileBtn
+         type="file"
+         id="uploadImg"
+         onChange={fileChangeHandler}
+        />
+        <DialogPushImgBtn htmlFor="uploadImg">사진변경</DialogPushImgBtn>
+       </Wrapper>
+      ) : (
+       <Wrapper>
+        <DialogPushImgBtn onClick={() => uploadProfileImg()}>
+         변경확인
+        </DialogPushImgBtn>
+       </Wrapper>
+      )}
      </Wrapper>
-     <Wrapper dr={`row`}>
-      <Wrapper width="100px">이름 : </Wrapper>
-      <MyDateBox
-       width={"200px"}
-       {...updateName}
-       type="text"
-       placeholder="이름"
-       readOnly
-      ></MyDateBox>
+     <Wrapper width={`35%`} margin={`0px 100px 0px 0px`}>
+      <Wrapper dr={`row`}>
+       <Wrapper width="100px">닉네임 : </Wrapper>
+       <MyDateBox
+        width={"200px"}
+        {...updateNickName}
+        type="text"
+        placeholder="닉네임"
+        readOnly
+       ></MyDateBox>
+      </Wrapper>
+      <Wrapper dr={`row`}>
+       <Wrapper width="100px">이름 : </Wrapper>
+       <MyDateBox
+        width={"200px"}
+        {...updateName}
+        type="text"
+        placeholder="이름"
+        readOnly
+       ></MyDateBox>
+      </Wrapper>
+      <Wrapper dr={`row`}>
+       <Wrapper width="100px">이메일 : </Wrapper>
+       <MyDateBox
+        width={"200px"}
+        {...updateEmail}
+        type="text"
+        placeholder="이메일"
+        readOnly
+       ></MyDateBox>
+      </Wrapper>
+      <Wrapper dr={`row`}>
+       <Wrapper width="100px">생년월일 : </Wrapper>
+       <MyDateBox
+        width={"200px"}
+        {...updateBirth}
+        type="text"
+        placeholder="생년월일"
+        readOnly
+       ></MyDateBox>
+      </Wrapper>
+      <Wrapper dr={`row`}>
+       <Wrapper width="100px">전화번호 : </Wrapper>
+       <MyDateBox
+        width={"200px"}
+        {...updateMobile}
+        type="text"
+        placeholder="전화번호"
+        readOnly
+       ></MyDateBox>
+      </Wrapper>
+      <Wrapper dr={`row`}>
+       <Wrapper width={`100px`}>주소 : </Wrapper>
+       <MyDateBox
+        width={"200px"}
+        {...updateAddress}
+        type="text"
+        placeholder="주소"
+        readOnly
+       ></MyDateBox>
+      </Wrapper>
+      <Wrapper dr={`row`}>
+       <Wrapper width={`100px`}>상세주소 : </Wrapper>
+       <MyDateBox
+        width={"200px"}
+        {...updateDetailAddress}
+        type="text"
+        placeholder="상세주소"
+        readOnly
+       ></MyDateBox>
+      </Wrapper>
+      <Wrapper dr={`row`}>
+       <Wrapper width={`100px`}>우편번호 : </Wrapper>
+       <MyDateBox
+        width={"200px"}
+        {...updateZoneCode}
+        type="text"
+        placeholder="우편번호"
+        readOnly
+       ></MyDateBox>
+      </Wrapper>
      </Wrapper>
-     <Wrapper dr={`row`}>
-      <Wrapper width="100px">이메일 : </Wrapper>
-      <MyDateBox
-       width={"200px"}
-       {...updateEmail}
-       type="text"
-       placeholder="이메일"
-       readOnly
-      ></MyDateBox>
-     </Wrapper>
-     <Wrapper dr={`row`}>
-      <Wrapper width="100px">생년월일 : </Wrapper>
-      <MyDateBox
-       width={"200px"}
-       {...updateBirth}
-       type="text"
-       placeholder="생년월일"
-       readOnly
-      ></MyDateBox>
-     </Wrapper>
-     <Wrapper dr={`row`}>
-      <Wrapper width="100px">전화번호 : </Wrapper>
-      <MyDateBox
-       width={"200px"}
-       {...updateMobile}
-       type="text"
-       placeholder="전화번호"
-       readOnly
-      ></MyDateBox>
-     </Wrapper>
-     <Wrapper dr={`row`}>
-      <Wrapper width={`100px`}>주소 : </Wrapper>
-      <MyDateBox
-       width={"200px"}
-       {...updateAddress}
-       type="text"
-       placeholder="주소"
-       readOnly
-      ></MyDateBox>
-     </Wrapper>
-     <Wrapper dr={`row`}>
-      <Wrapper width={`100px`}>상세주소 : </Wrapper>
-      <MyDateBox
-       width={"200px"}
-       {...updateDetailAddress}
-       type="text"
-       placeholder="상세주소"
-       readOnly
-      ></MyDateBox>
-     </Wrapper>
-     <Wrapper dr={`row`}>
-      <Wrapper width={`100px`}>우편번호 : </Wrapper>
-      <MyDateBox
-       width={"200px"}
-       {...updateZoneCode}
-       type="text"
-       placeholder="우편번호"
-       readOnly
-      ></MyDateBox>
-     </Wrapper>
+     <Wrapper width={`15%`}></Wrapper>
     </Wrapper>
     <Wrapper dr={`row`} margin={`50px 0px 100px 0px`}>
      <ClickBtn onClick={() => _isDialogOpenToggle()}>회원정보수정</ClickBtn>
@@ -179,78 +213,80 @@ const MM03Presenter = ({
      회원정보 수정
     </DialogTitle>
     <DialogContent>
-     <Wrapper>
-      <Wrapper dr={`row`}>
-       <Wrapper width={"100px"}>닉네임 : </Wrapper>
-       <TextBox
-        width={"200px"}
-        {...updateNickName}
-        type="text"
-        placeholder="닉네임"
-       ></TextBox>
-      </Wrapper>
-      <Wrapper dr={`row`}>
-       <Wrapper width={"100px"}>이름 : </Wrapper>
-       <TextBox
-        width={"200px"}
-        {...updateName}
-        type="text"
-        placeholder="이름"
-       ></TextBox>
-      </Wrapper>
-      <Wrapper dr={"row"}>
-       <Wrapper width={"100px"}>이메일 : </Wrapper>
-       <TextBox
-        width={"200px"}
-        {...updateEmail}
-        type="text"
-        placeholder="이메일"
-       ></TextBox>
-      </Wrapper>
-      <Wrapper dr={`row`}>
-       <Wrapper width={"100px"}>생년월일 : </Wrapper>
-       <TextBox
-        width={"200px"}
-        {...updateBirth}
-        type="text"
-        placeholder="생년월일"
-       ></TextBox>
-      </Wrapper>
-      <Wrapper dr={`row`}>
-       <Wrapper width={`100px`}>전화번호 : </Wrapper>
-       <TextBox
-        width={"200px"}
-        {...updateMobile}
-        type="text"
-        placeholder="전화번호"
-       ></TextBox>
-      </Wrapper>
-      <Wrapper dr={`row`}>
-       <Wrapper width={"100px"}>주소 : </Wrapper>
-       <TextBox
-        width={"200px"}
-        {...updateAddress}
-        type="text"
-        placeholder="주소"
-       ></TextBox>
-      </Wrapper>
-      <Wrapper dr={`row`}>
-       <Wrapper width={`100px`}>상세주소 : </Wrapper>
-       <TextBox
-        width={"200px"}
-        {...updateDetailAddress}
-        type="text"
-        placeholder="상세주소"
-       ></TextBox>
-      </Wrapper>
-      <Wrapper dr={`row`}>
-       <Wrapper width={"100px"}>우편번호 : </Wrapper>
-       <TextBox
-        width={"200px"}
-        {...updateZoneCode}
-        type="text"
-        placeholder="우편번호"
-       ></TextBox>
+     <Wrapper dr={`row`}>
+      <Wrapper>
+       <Wrapper dr={`row`}>
+        <Wrapper width={"100px"}>닉네임 : </Wrapper>
+        <TextBox
+         width={"200px"}
+         {...updateNickName}
+         type="text"
+         placeholder="닉네임"
+        ></TextBox>
+       </Wrapper>
+       <Wrapper dr={`row`}>
+        <Wrapper width={"100px"}>이름 : </Wrapper>
+        <TextBox
+         width={"200px"}
+         {...updateName}
+         type="text"
+         placeholder="이름"
+        ></TextBox>
+       </Wrapper>
+       <Wrapper dr={"row"}>
+        <Wrapper width={"100px"}>이메일 : </Wrapper>
+        <TextBox
+         width={"200px"}
+         {...updateEmail}
+         type="text"
+         placeholder="이메일"
+        ></TextBox>
+       </Wrapper>
+       <Wrapper dr={`row`}>
+        <Wrapper width={"100px"}>생년월일 : </Wrapper>
+        <TextBox
+         width={"200px"}
+         {...updateBirth}
+         type="text"
+         placeholder="생년월일"
+        ></TextBox>
+       </Wrapper>
+       <Wrapper dr={`row`}>
+        <Wrapper width={`100px`}>전화번호 : </Wrapper>
+        <TextBox
+         width={"200px"}
+         {...updateMobile}
+         type="text"
+         placeholder="전화번호"
+        ></TextBox>
+       </Wrapper>
+       <Wrapper dr={`row`}>
+        <Wrapper width={"100px"}>주소 : </Wrapper>
+        <TextBox
+         width={"200px"}
+         {...updateAddress}
+         type="text"
+         placeholder="주소"
+        ></TextBox>
+       </Wrapper>
+       <Wrapper dr={`row`}>
+        <Wrapper width={`100px`}>상세주소 : </Wrapper>
+        <TextBox
+         width={"200px"}
+         {...updateDetailAddress}
+         type="text"
+         placeholder="상세주소"
+        ></TextBox>
+       </Wrapper>
+       <Wrapper dr={`row`}>
+        <Wrapper width={"100px"}>우편번호 : </Wrapper>
+        <TextBox
+         width={"200px"}
+         {...updateZoneCode}
+         type="text"
+         placeholder="우편번호"
+        ></TextBox>
+       </Wrapper>
       </Wrapper>
      </Wrapper>
     </DialogContent>

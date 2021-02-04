@@ -30,6 +30,7 @@ export const GET_ALL_USER_LENGTH = gql`
 export const CREATE_USER = gql`
  mutation createUser(
   $name: String!
+  $profileImage: String
   $passWord: String!
   $email: String!
   $mobile: String!
@@ -41,6 +42,7 @@ export const CREATE_USER = gql`
  ) {
   createUser(
    name: $name
+   profileImage: $profileImage
    passWord: $passWord
    email: $email
    mobile: $mobile

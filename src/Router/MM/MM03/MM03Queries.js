@@ -26,6 +26,12 @@ export const UPDATE_USER = gql`
  }
 `;
 
+export const UPDATE_PROFILEIMG = gql`
+ mutation updateProfileImg($id: String!, $profileImage: String!) {
+  updateProfileImg(id: $id, profileImage: $profileImage)
+ }
+`;
+
 export const DELETE_USER = gql`
  mutation deleteUser($id: String!) {
   deleteUser(id: $id)

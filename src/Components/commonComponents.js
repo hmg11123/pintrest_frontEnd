@@ -43,8 +43,8 @@ export const TextBox = styled.input`
  padding: 10px;
  margin: 20px 0px;
  transition: 0.5s;
- color: black;
- color: white;
+ color: ${(props) => props.color || `black`};
+ background-color: ${(props) => props.bgColor || `white`};
  border-bottom: 2px solid white;
  &:hover {
   box-shadow: 5px 7px 9px gray;
@@ -53,4 +53,84 @@ export const TextBox = styled.input`
  &:focus {
   box-shadow: 5px 7px 9px gray;
  }
+`;
+
+export const OriginFileBtn = styled.input`
+ display: none;
+`;
+
+export const ProfileImgBox = styled.img`
+ width: 250px;
+ height: 250px;
+`;
+
+export const PushImgBtn = styled.label`
+ cursor: pointer;
+ width: 200px;
+ height: 30px;
+ background-color: white;
+ color: black;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ border-radius: 30px;
+ &:hover {
+  border: 1px solid gray;
+ }
+`;
+
+export const DialogPushImgBtn = styled.label`
+ cursor: pointer;
+ width: 200px;
+ height: 30px;
+ background-color: black;
+ color: white;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ border-radius: 30px;
+ transition: 0.5s;
+ margin-top: 20px;
+ box-shadow: 4px 6px 8px gray;
+ &:hover {
+  background-color: white;
+  color: black;
+ }
+`;
+
+export const CommenImgBox = styled.img`
+ display: ${(props) => props.display};
+ width: ${(props) => props.width || `100%`};
+ min-width: ${(props) => props.minWidth};
+ height: ${(props) => props.height || `auto`};
+ align-items: ${(props) => props.al};
+ justify-content: ${(props) => props.ju};
+ margin: ${(props) => props.margin};
+ background-color: ${(props) => props.bgColor || "white"};
+ object-fit: ${(props) => props.objectFit || `cover`};
+ position: ${(props) => (props.isAbsolute ? `absolute` : ``)};
+ position: ${(props) => (props.isRelative ? `relative` : ``)};
+ box-shadow: ${(props) => props.shadow};
+ border-radius: ${(props) => props.radius};
+ z-index: ${(props) => props.zIndex};
+ top: ${(props) => props.top};
+ left: ${(props) => props.left};
+ bottom: ${(props) => props.bottom};
+ right: ${(props) => props.right};
+ transition: 0.3s;
+ filter: ${(props) => (props.isFilter ? `brightness(30%) opacity(0.4)` : ` `)};
+ &:hover {
+  filter: ${(props) => (props.isHover ? `brightness(100%) opacity(1)` : ` `)};
+
+  box-shadow: ${(props) => (props.isShadowHover ? `15px 20px #f1f2f6` : ``)};
+  box-shadow: ${(props) => (props.isShadowHover2 ? `15px -20px #f1f2f6` : ``)};
+  box-shadow: ${(props) => (props.isShadowHover3 ? `-15px 20px #f1f2f6` : ``)};
+  box-shadow: ${(props) => (props.isShadowHover4 ? `-15px -20px #f1f2f6` : ``)};
+ }
+`;
+
+export const LineWrapper = styled.div`
+ width: ${(props) => props.width || `100%`};
+ height: ${(props) => props.height || `100%`};
+ border-bottom: ${(props) => props.border || `4px solid #bdc3c7`};
 `;

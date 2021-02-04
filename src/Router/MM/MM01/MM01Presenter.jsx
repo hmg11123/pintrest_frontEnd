@@ -4,6 +4,9 @@ import {
  Wrapper,
  TitleWrapper,
  TextBox,
+ OriginFileBtn,
+ ProfileImgBox,
+ PushImgBtn,
 } from "../../../Components/commonComponents";
 
 const AddressBtn = styled.button`
@@ -45,6 +48,8 @@ const SignUpBtn = styled.button`
 const MM01Presenter = ({
  newName,
  newEmail,
+ fileChangeHandler,
+ imagePath,
  newMobile,
  newAddress,
  newDetailAddress,
@@ -60,56 +65,71 @@ const MM01Presenter = ({
  return (
   <Wrapper>
    <TitleWrapper>회원가입</TitleWrapper>
-   <Wrapper>
-    <Wrapper width={`400px`} dr={`row`}>
-     <TextBox width={"200px"} {...newNickName} placeholder="닉네임"></TextBox>
-     <AddressBtn width={"90px"} onClick={nickNameCheckHandler}>
-      닉네임 확인
-     </AddressBtn>
+   <Wrapper dr={`row`} ju={`flex-start`}>
+    <Wrapper width={`25%`}></Wrapper>
+    <Wrapper width={`25%`} margin={`0px 0px 0px 40px`}>
+     <Wrapper margin={`0px 0px 600px 0px`}>
+      <ProfileImgBox src={imagePath} />
+      <Wrapper>
+       <OriginFileBtn type="file" id="uploadImg" onChange={fileChangeHandler} />
+       <PushImgBtn htmlFor="uploadImg">사진등록</PushImgBtn>
+      </Wrapper>
+     </Wrapper>
     </Wrapper>
-    <TextBox
-     width={"300px"}
-     type="password"
-     {...newPassWord}
-     placeholder="비밀번호"
-    ></TextBox>
-    <TextBox
-     width={"300px"}
-     {...checkPassWord}
-     type="password"
-     placeholder="비밀번호 확인"
-    ></TextBox>
-    <TextBox width={"300px"} {...newName} placeholder="이름"></TextBox>
-    <TextBox width={"300px"} {...newEmail} placeholder="이메일"></TextBox>
-    <TextBox width={"300px"} {...newMobile} placeholder="전화번호"></TextBox>
-    <TextBox width={"300px"} {...newBirth} placeholder="생년월일"></TextBox>
-    <Wrapper width={"400px"} dr={`row`}>
-     <TextBox
-      width={"200px"}
-      {...newZoneCode}
-      placeholder="우편번호"
-      readOnly
-     ></TextBox>
-     <AddressBtn width={"90px"} onClick={searchPostHandler}>
-      주소찾기
-     </AddressBtn>
+    <Wrapper width={`35%`} al={`flex-start`} margin={`0px 100px 0px 0px `}>
+     <Wrapper>
+      <Wrapper width={`400px`} dr={`row`}>
+       <TextBox width={"200px"} {...newNickName} placeholder="닉네임"></TextBox>
+       <AddressBtn width={"90px"} onClick={nickNameCheckHandler}>
+        닉네임 확인
+       </AddressBtn>
+      </Wrapper>
+      <TextBox
+       width={"300px"}
+       type="password"
+       {...newPassWord}
+       placeholder="비밀번호"
+      ></TextBox>
+      <TextBox
+       width={"300px"}
+       {...checkPassWord}
+       type="password"
+       placeholder="비밀번호 확인"
+      ></TextBox>
+      <TextBox width={"300px"} {...newName} placeholder="이름"></TextBox>
+      <TextBox width={"300px"} {...newEmail} placeholder="이메일"></TextBox>
+      <TextBox width={"300px"} {...newMobile} placeholder="전화번호"></TextBox>
+      <TextBox width={"300px"} {...newBirth} placeholder="생년월일"></TextBox>
+      <Wrapper width={"400px"} dr={`row`}>
+       <TextBox
+        width={"200px"}
+        {...newZoneCode}
+        placeholder="우편번호"
+        readOnly
+       ></TextBox>
+       <AddressBtn width={"90px"} onClick={searchPostHandler}>
+        주소찾기
+       </AddressBtn>
+      </Wrapper>
+
+      <TextBox
+       width={"300px"}
+       {...newAddress}
+       placeholder="주소"
+       readOnly
+      ></TextBox>
+      <TextBox
+       width={"300px"}
+       {...newDetailAddress}
+       placeholder="상세주소"
+      ></TextBox>
+     </Wrapper>
+
+     <Wrapper>
+      <SignUpBtn onClick={signUpHandler}>회원가입</SignUpBtn>
+     </Wrapper>
     </Wrapper>
-
-    <TextBox
-     width={"300px"}
-     {...newAddress}
-     placeholder="주소"
-     readOnly
-    ></TextBox>
-    <TextBox
-     width={"300px"}
-     {...newDetailAddress}
-     placeholder="상세주소"
-    ></TextBox>
-   </Wrapper>
-
-   <Wrapper>
-    <SignUpBtn onClick={signUpHandler}>회원가입</SignUpBtn>
+    <Wrapper width={`15%`}></Wrapper>
    </Wrapper>
   </Wrapper>
  );

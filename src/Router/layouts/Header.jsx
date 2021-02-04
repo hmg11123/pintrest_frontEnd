@@ -45,7 +45,7 @@ const Header = ({ history }) => {
  };
  return (
   <Wrapper bc={`black`} color={`white`} heigth={`150px`} dr={`row`}>
-   <Wrapper width={`25%`} onClick={() => moveLinkHandler("")}>
+   <Wrapper width={`15%`} onClick={() => moveLinkHandler("")}>
     로고?f
    </Wrapper>
    <Wrapper width={`50%`}>
@@ -54,7 +54,7 @@ const Header = ({ history }) => {
      onKeyDown={(e) => e.keyCode === 13 && changeSearchValueHandler()}
     ></SearchBox>
    </Wrapper>
-   <Wrapper width={`25%`} dr={`row`}>
+   <Wrapper width={`35%`} dr={`row`}>
     {window.sessionStorage.getItem("login") ? (
      <Wrapper dr={`row`}>
       <LoginBtn
@@ -69,6 +69,17 @@ const Header = ({ history }) => {
        마이페이지
       </LoginBtn>
       <LoginBtn onClick={() => logout("")}>로그아웃</LoginBtn>
+      <LoginBtn
+       onClick={() =>
+        moveLinkHandler(
+         `createBoard/${
+          JSON.parse(sessionStorage.getItem("login")).getUser.userData._id
+         }`
+        )
+       }
+      >
+       사진올리기
+      </LoginBtn>
      </Wrapper>
     ) : (
      <Wrapper dr={`row`}>

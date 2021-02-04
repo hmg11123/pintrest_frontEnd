@@ -9,6 +9,7 @@ import {
 } from "./MM01Queries";
 import useInput from "../../../Hooks/useInput";
 import { toast } from "react-toastify";
+import storageRef from "../../../firebase";
 
 const MM01Container = ({ history }) => {
  const newName = useInput("");
@@ -22,7 +23,7 @@ const MM01Container = ({ history }) => {
  const newBirth = useInput("");
  const checkPassWord = useInput("");
  const [checkNickName, setCheckNickName] = useState(false);
-
+ const [imagePath, setImagePath] = useState(``);
  const {
   data: userDatum,
   loading: userLoading,
@@ -98,6 +99,7 @@ const MM01Container = ({ history }) => {
   const { data } = await createUserMutation({
    variables: {
     name: newName.value,
+    profileImage: imagePath,
     passWord: newPassWord.value,
     email: newEmail.value,
     mobile: newMobile.value,
@@ -116,6 +118,37 @@ const MM01Container = ({ history }) => {
   }
  };
 
+ const fileChangeHandler = async (e) => {
+  const originFile = e.target.files[0];
+  const originFileName = e.target.files[0].name;
+
+  console.log(originFile);
+  console.log(originFileName);
+
+  const D = new Date();
+
+  const year = D.getFullYear() + "";
+  const month = D.getMonth() + 1 + "";
+  const date = D.getDate() + "";
+  const hour = D.getHours() + "";
+  const min = D.getMinutes() + "";
+  const sec = D.getSeconds() + "";
+
+  const suffix = year + month + date + hour + min + sec;
+
+  const uploadFileName = originFileName + suffix;
+
+  try {
+   const storage = await storageRef.child(`User/profileImg/${uploadFileName}`);
+
+   await storage.put(originFile);
+   const url = await storage.getDownloadURL();
+
+   await setImagePath(url);
+   await toast.info("사진이 추가되었습니다");
+  } catch (e) {}
+ };
+
  const searchPostHandler = () => {
   new daum.Postcode({
    oncomplete: function (data) {
@@ -128,6 +161,7 @@ const MM01Container = ({ history }) => {
   <MM01Presenter
    newName={newName}
    newEmail={newEmail}
+   imagePath={imagePath}
    newMobile={newMobile}
    newAddress={newAddress}
    newDetailAddress={newDetailAddress}
@@ -137,6 +171,7 @@ const MM01Container = ({ history }) => {
    checkPassWord={checkPassWord}
    newNickName={newNickName}
    signUpHandler={signUpHandler}
+   fileChangeHandler={fileChangeHandler}
    nickNameCheckHandler={nickNameCheckHandler}
    searchPostHandler={searchPostHandler}
   ></MM01Presenter>
