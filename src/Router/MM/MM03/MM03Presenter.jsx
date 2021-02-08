@@ -14,6 +14,26 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 
+const AddressBtn = styled.button`
+ outline: none;
+ background: none;
+ border: none;
+ cursor: pointer;
+ width: ${(props) => props.width};
+ height: 40px;
+ border: 1px solid black;
+ color: black;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 0px 0px 0px 10px;
+ transition: 0.2s;
+
+ &:hover {
+  box-shadow: 3px 5px 7px gray;
+ }
+`;
+
 const ClickBtn = styled.button`
  outline: none;
  background: none;
@@ -80,6 +100,7 @@ const MM03Presenter = ({
  isDialogOpen,
  uploadProfileImg,
  chageBtn,
+ searchPostHandler,
 }) => {
  return (
   <Wrapper>
@@ -261,6 +282,18 @@ const MM03Presenter = ({
         ></TextBox>
        </Wrapper>
        <Wrapper dr={`row`}>
+        <Wrapper width={"100px"}>우편번호 : </Wrapper>
+        <TextBox
+         width={"100px"}
+         {...updateZoneCode}
+         type="text"
+         placeholder="우편번호"
+        ></TextBox>
+        <AddressBtn width={"90px"} onClick={searchPostHandler}>
+         주소찾기
+        </AddressBtn>
+       </Wrapper>
+       <Wrapper dr={`row`}>
         <Wrapper width={"100px"}>주소 : </Wrapper>
         <TextBox
          width={"200px"}
@@ -276,15 +309,6 @@ const MM03Presenter = ({
          {...updateDetailAddress}
          type="text"
          placeholder="상세주소"
-        ></TextBox>
-       </Wrapper>
-       <Wrapper dr={`row`}>
-        <Wrapper width={"100px"}>우편번호 : </Wrapper>
-        <TextBox
-         width={"200px"}
-         {...updateZoneCode}
-         type="text"
-         placeholder="우편번호"
         ></TextBox>
        </Wrapper>
       </Wrapper>

@@ -10,6 +10,11 @@ import {
 import styled from "styled-components";
 import { MdMoreHoriz } from "react-icons/md";
 import { FiShare } from "react-icons/fi";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 
 const FollowerBtn = styled.button`
  cursor: pointer;
@@ -25,23 +30,64 @@ const FollowerBtn = styled.button`
  }
 `;
 
+const SelectBox = styled.select`
+ outline: none;
+ border: none;
+ background: none;
+ background-color: #f0f0f0;
+ width: 160px;
+ height: 40px;
+ padding: 10px;
+ border-top-left-radius: 5px;
+ border-bottom-left-radius: 5px;
+`;
+const OptionBox = styled.option``;
+
 const CommentWrapper = styled(Wrapper)`
  border: 1px solid lightgray;
  border-radius: 15px;
 `;
 
 const CommentWholeWrapper = styled(Wrapper)`
+ overflow-x: hidden;
  overflow-y: auto;
  height: 300px;
  color: black;
  justify-content: flex-start;
 `;
 
+const WhiteWrapper = styled(Wrapper)`
+ width: 100%;
+ height: auto;
+ border-radius: 20px;
+ z-index: 3;
+ transition: 0.5s;
+ &:hover {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  /* position: absolute; */
+  background-color: #ffffff;
+  color: #000000;
+ }
+`;
+const ImgBoxWrapper = styled(Wrapper)`
+ z-index: 2;
+ transition: 0.2s;
+ border-radius: 20px;
+ position: relative;
+ /* &:hover {
+  background-color: white;
+  position: absolute;
+ } */
+`;
+
 const BackWrapper = styled(Wrapper)`
  padding: 0;
  width: 1000px;
- height: 700px;
+ height: 100%;
  flex-direction: row;
+ align-items: flex-start;
  box-shadow: 5px 7px 4px #313131;
  border-radius: 30px;
  background-color: white;
@@ -60,24 +106,37 @@ const LeftBackWrapper = styled(Wrapper)`
 `;
 
 const ProFileWrapper = styled(CommenImgBox)`
- width: 50px;
- height: 50px;
+ width: ${(props) => props.width || `50px`};
+ height: ${(props) => props.height || `50px`};
  border-radius: 100%;
  background-size: cover;
 `;
 
+const SetBoardBtn = styled.button`
+ outline: none;
+ border: none;
+ background: none;
+ cursor: pointer;
+ width: 50px;
+ height: 40px;
+ border-top-right-radius: 5px;
+ border-bottom-right-radius: 5px;
+ background-color: black;
+ color: white;
+`;
+
 const LeftBackImgWrapper = styled.img`
  width: 100%;
- height: 100%;
+ height: auto;
  background-size: cover;
  border-top-left-radius: 30px;
  border-bottom-left-radius: 30px;
  transition: 0.2s;
  z-index: 90;
- &:hover {
+ /* &:hover {
   margin: 0px 0px 0px 500px;
   width: auto;
-  border-radius: 30px;
+  border-radius: 30px; */
   /* opacity: 80%; */
  }
 `;
@@ -151,6 +210,16 @@ const DeleteBtn = styled.button`
  }
 `;
 
+const CommentBtn = styled.button`
+ outline: none;
+ border: none;
+ background: none;
+ font-size: 13px;
+ color: #bdc3c7;
+ padding: 0;
+ margin: 3px;
+`;
+
 const MM_DPresenter = ({
  inputComment,
  getOneBoardDatum,
@@ -163,6 +232,13 @@ const MM_DPresenter = ({
  getCommentDatum,
  commentBoolean,
  commentCreateHandler,
+ getAllBoardDatum,
+ moveLinkHandler,
+ inputDesc,
+ _isDialogOpenToggle,
+ isDialogOpen,
+ commentUpdate,
+ commentDelete,
 }) => {
  return (
   <Wrapper>
@@ -177,17 +253,48 @@ const MM_DPresenter = ({
      </LeftBackWrapper>
 
      <RightBackWrapper>
-      <Wrapper height={"100px"} dr={"row"}>
-       <Wrapper dr={`row`} ju={"flex-start"}>
-        <Wrapper width={"40px"}>
-         <MdMoreHoriz size="35"></MdMoreHoriz>
-        </Wrapper>
-        <Wrapper width={"40px"}>
-         <FiShare size="30"></FiShare>
-        </Wrapper>
-       </Wrapper>
-       <Wrapper>C</Wrapper>
-      </Wrapper>
+      {sessionStorage.getItem("login") ? (
+       getOneBoardDatum ? (
+        getOneBoardDatum.author._id === sessionUser.getUser.userData._id ? (
+         <Wrapper height={"100px"} dr={"row"}>
+          <Wrapper dr={`row`} ju={"flex-start"}>
+           <Wrapper width={"40px"}>
+            <MdMoreHoriz size="35"></MdMoreHoriz>
+           </Wrapper>
+           <Wrapper width={"40px"}>
+            <FiShare size="30"></FiShare>
+           </Wrapper>
+          </Wrapper>
+          <Wrapper></Wrapper>
+         </Wrapper>
+        ) : (
+         <Wrapper height={"100px"} dr={"row"}>
+          <Wrapper dr={`row`} ju={"flex-start"}>
+           <Wrapper width={"40px"}>
+            <MdMoreHoriz size="35"></MdMoreHoriz>
+           </Wrapper>
+           <Wrapper width={"40px"}>
+            <FiShare size="30"></FiShare>
+           </Wrapper>
+          </Wrapper>
+          <Wrapper dr={`row`}>
+           <SelectBox>
+            <OptionBox>a</OptionBox>
+            <OptionBox>b</OptionBox>
+            <OptionBox>c</OptionBox>
+            <OptionBox>d</OptionBox>
+            <OptionBox>e</OptionBox>
+           </SelectBox>
+           <SetBoardBtn>저장</SetBoardBtn>
+          </Wrapper>
+         </Wrapper>
+        )
+       ) : (
+        ""
+       )
+      ) : (
+       ""
+      )}
       {getOneBoardDatum ? (
        getOneBoardDatum.title === "" ? (
         ""
@@ -224,7 +331,7 @@ const MM_DPresenter = ({
 
         {sessionStorage.getItem("login") ? (
          getOneBoardDatum ? (
-          getOneBoardDatum.author === sessionUser.getUser.userData._id ? (
+          getOneBoardDatum.author._id === sessionUser.getUser.userData._id ? (
            <Wrapper></Wrapper>
           ) : getDetailUserDatum ? (
            getDetailUserDatum.follower.indexOf(
@@ -266,7 +373,7 @@ const MM_DPresenter = ({
            ? "댓글이 없습니다"
            : sessionStorage.getItem("login")
            ? getCommentDatum.map((data, idx) => {
-              return data.author === sessionUser.getUser.userData._id ? (
+              return data.author._id === sessionUser.getUser.userData._id ? (
                <Wrapper
                 width={"400px"}
                 height={"auto"}
@@ -276,16 +383,47 @@ const MM_DPresenter = ({
                 ju={"flex-end"}
                 key={idx}
                >
-                <CommentWrapper
-                 al={`flex-start`}
-                 width={"auto"}
-                 height={"100%"}
-                 padding={"10px"}
-                 margin={"0px 10px 0px 0px"}
-                >
-                 {data.desc}
-                </CommentWrapper>
-                <ProFileWrapper src=""></ProFileWrapper>
+                <Wrapper padding={`0`} width={"auto"}>
+                 <CommentWrapper
+                  al={`flex-start`}
+                  width={"auto"}
+                  height={"100%"}
+                  padding={"10px"}
+                  margin={"0px 10px 0px 0px"}
+                 >
+                  <Wrapper pading={"0"} dr={`row`} fs={"15px"}>
+                   <Wrapper
+                    padding={"0"}
+                    margin={`0px 10px 0px 0px`}
+                    fs={"14px"}
+                    al={`flex-end`}
+                   >
+                    {data.createdAt.substring(5, 11)}
+                   </Wrapper>
+                   {data.author.nickName}
+                  </Wrapper>
+                  <Wrapper pading={"0"} al={"flex-start"} fs={"13px"}>
+                   {data.desc}
+                  </Wrapper>
+                 </CommentWrapper>
+                 <Wrapper
+                  dr={`row`}
+                  ju={"flex-start"}
+                  padding={"0"}
+                  color={"#bdc3c7"}
+                 >
+                  {/* <MdMoreHoriz size="20"></MdMoreHoriz> */}
+                  <CommentBtn
+                   onClick={() => _isDialogOpenToggle(data._id, data.desc)}
+                  >
+                   수정
+                  </CommentBtn>
+                  <CommentBtn onClick={() => commentDelete(data._id)}>
+                   삭제
+                  </CommentBtn>
+                 </Wrapper>
+                </Wrapper>
+                <ProFileWrapper src={data.author.profileImage}></ProFileWrapper>
                </Wrapper>
               ) : (
                <Wrapper
@@ -296,7 +434,7 @@ const MM_DPresenter = ({
                 ju={"flex-start"}
                 key={idx}
                >
-                <ProFileWrapper src=""></ProFileWrapper>
+                <ProFileWrapper src={data.author.profileImage}></ProFileWrapper>
                 <CommentWrapper
                  al={"flex-start"}
                  width={"auto"}
@@ -304,7 +442,21 @@ const MM_DPresenter = ({
                  padding={"10px"}
                  margin={"0px 0px 0px 10px"}
                 >
-                 {data.desc}
+                 <Wrapper pading={"0"} dr={`row`} fs={"15px"}>
+                  {data.author.nickName}
+                  <Wrapper
+                   padding={"0"}
+                   margin={`0px 0px 0px 10px`}
+                   color={"#bdc3c7"}
+                   fs={"14px"}
+                   al={`flex-start`}
+                  >
+                   {data.createdAt.substring(5, 11)}
+                  </Wrapper>
+                 </Wrapper>
+                 <Wrapper pading={"0"} al={"flex-start"} fs={"13px"}>
+                  {data.desc}
+                 </Wrapper>
                 </CommentWrapper>
                </Wrapper>
               );
@@ -319,7 +471,7 @@ const MM_DPresenter = ({
                 ju={"flex-start"}
                 key={idx}
                >
-                <ProFileWrapper src=""></ProFileWrapper>
+                <ProFileWrapper src={data.author.profileImage}></ProFileWrapper>
                 <CommentWrapper
                  al={"flex-start"}
                  width={"auto"}
@@ -327,7 +479,21 @@ const MM_DPresenter = ({
                  padding={"10px"}
                  margin={"0px 0px 0px 10px"}
                 >
-                 {data.desc}
+                 <Wrapper pading={"0"} dr={`row`} fs={"15px"}>
+                  {data.author.nickName}
+                  <Wrapper
+                   padding={"0"}
+                   margin={`0px 0px 0px 10px`}
+                   color={"#bdc3c7"}
+                   fs={"14px"}
+                   al={`flex-start`}
+                  >
+                   {data.createdAt.substring(5, 11)}
+                  </Wrapper>
+                 </Wrapper>
+                 <Wrapper pading={"0"} al={"flex-start"} fs={"13px"}>
+                  {data.desc}
+                 </Wrapper>
                 </CommentWrapper>
                </Wrapper>
               );
@@ -366,6 +532,101 @@ const MM_DPresenter = ({
      </RightBackWrapper>
     </BackWrapper>
    </Wrapper>
+   <TitleWrapper>다른 사진 더보기</TitleWrapper>
+   <Wrapper dr={`row`}>
+    <Wrapper width={"13%"}></Wrapper>
+    <Wrapper
+     width={"80%"}
+     wr={"wrap"}
+     dr={"row"}
+     al={`flex-start`}
+     ju={"flex-start"}
+     padding={"0"}
+    >
+     {getAllBoardDatum ? (
+      getAllBoardDatum.length === 0 ? (
+       <Wrapper>공지사항이 없습니다.</Wrapper>
+      ) : (
+       getAllBoardDatum.map((data, idx) => {
+        return (
+         <ImgBoxWrapper
+          width={"230px"}
+          heigth={"auto"}
+          margin={"10px"}
+          key={idx}
+          onClick={() => moveLinkHandler(`detail/${data._id}`)}
+          padding={"0"}
+         >
+          <Wrapper padding={"0"}>
+           <WhiteWrapper>
+            <CommenImgBox
+             zIndex={"1"}
+             isDisplay={true}
+             radius={"20px"}
+             src={data.imgPath}
+             //    onClick={() => showWrapperHandler(
+            ></CommenImgBox>
+            <Wrapper dr={"row"} ju={"flex-start"}>
+             <Wrapper padding={"0"} width={"30px"}>
+              <ProFileWrapper
+               width={"30px"}
+               height={"30px"}
+               src={data.author.profileImage}
+              ></ProFileWrapper>
+             </Wrapper>
+             <Wrapper width={"20px"} padding={"0"} margin={"0px 0px 0px 5px"}>
+              {data.author.nickName}
+             </Wrapper>
+             <Wrapper padding={"0"} margin={"10px"} fs={"18px"}>
+              {data.title}
+             </Wrapper>
+            </Wrapper>
+           </WhiteWrapper>
+          </Wrapper>
+         </ImgBoxWrapper>
+        );
+       })
+      )
+     ) : (
+      "loading..."
+     )}
+    </Wrapper>
+    <Wrapper width={"7%"}></Wrapper>
+   </Wrapper>
+   {/* Dialog Area */}
+   {/**====================================================================== */}
+   <Dialog
+    // onClose={_isDialogOpenToggle}
+    aria-labelledby="customized-dialog-title"
+    open={isDialogOpen}
+    fullWidth={true}
+   >
+    <DialogTitle
+     id="customized-dialog-title"
+     onClose={_isDialogOpenToggle}
+     // class="dialog_title"
+    >
+     댓글 수정
+    </DialogTitle>
+    <DialogContent>
+     <Wrapper>
+      <TextArea
+       {...inputDesc}
+       placeholder={"수정할 내용을 작성해주세요"}
+      ></TextArea>
+     </Wrapper>
+    </DialogContent>
+    <DialogActions>
+     <Button color="primary" onClick={commentUpdate}>
+      수정하기
+     </Button>
+     <Button color="secondary" onClick={_isDialogOpenToggle}>
+      취소
+     </Button>
+    </DialogActions>
+   </Dialog>
+
+   {/* Dialog Area */}
   </Wrapper>
  );
 };

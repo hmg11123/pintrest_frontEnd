@@ -10,17 +10,24 @@ import {
  DELETE_FOLLOWER,
  CREATE_COMMENT,
  GET_COMMENT,
+ GET_All_BOARD,
+ UPDATE_COMMENT,
+ DELETE_COMMENT,
 } from "./MM_DQueries";
 
-const MM_DContainer = ({ match }) => {
+const MM_DContainer = ({ match, history }) => {
  const [imagePath, setImagePath] = useState(``);
  const inputComment = useInput(``);
  const inputDesc = useInput(``);
  const [commentBoolean, setCommentBoolean] = useState(false);
+ const [isDialogOpen, setIsDialogOpen] = useState(false);
+ const [commentId, setCommentId] = useState(``);
 
  const [updateFollowerMutation] = useMutation(UPDATE_FOLLOWER);
  const [deleteFollowerMutation] = useMutation(DELETE_FOLLOWER);
  const [createCommentMutation] = useMutation(CREATE_COMMENT);
+ const [updateCommentMutation] = useMutation(UPDATE_COMMENT);
+ const [deleteCommentMutation] = useMutation(DELETE_COMMENT);
  const sessionUser = JSON.parse(sessionStorage.getItem("login"));
 
  const {
@@ -43,7 +50,15 @@ const MM_DContainer = ({ match }) => {
   },
  });
 
- console.log(getCommentDatum);
+ //  const {
+ //      data: getCommentDetail,
+ //      loading: getCommentDetailLoading,
+ //      refetch: getCommentDetailRefetch,
+ //  } = useQuery(GET_COMMENT_DETAIL, {
+ //      variables: {
+
+ //      }
+ //  })
 
  const {
   data: getDetailUserDatum,
@@ -51,17 +66,22 @@ const MM_DContainer = ({ match }) => {
   refetch: getDetailUserRefetch,
  } = useQuery(GET_DETAIL_USER, {
   variables: {
-   id: getOneBoardDatum && getOneBoardDatum.getOneBoard.author,
+   id: getOneBoardDatum && getOneBoardDatum.getOneBoard.author._id,
   },
-  skip: !(getOneBoardDatum && getOneBoardDatum.getOneBoard.author),
+  skip: !(getOneBoardDatum && getOneBoardDatum.getOneBoard.author._id),
  });
+
+ const {
+  data: getAllBoardDatum,
+  loading: getAllBoardLoading,
+  refetch: getAllBoardRefetch,
+ } = useQuery(GET_All_BOARD);
 
  const followerUpdateHandler = async () => {
   if (!sessionUser) {
    toast.error("로그인후 이용하실수 있습니다.");
    return;
   }
-  //   [1,2,3,4,5,6].indexOf(5)
 
   if (
    getDetailUserDatum.getDetailUser.follower.indexOf(
@@ -73,7 +93,7 @@ const MM_DContainer = ({ match }) => {
   }
   const { data } = await updateFollowerMutation({
    variables: {
-    id: getOneBoardDatum && getOneBoardDatum.getOneBoard.author,
+    id: getOneBoardDatum && getOneBoardDatum.getOneBoard.author._id,
     userId: sessionUser.getUser.userData._id,
    },
   });
@@ -86,16 +106,9 @@ const MM_DContainer = ({ match }) => {
  };
 
  const followerDeleteHandler = async () => {
-  //   if (
-  //    getDetailUserDatum.getDetailUser.follower.indexOf(
-  //     sessionUser.getUser.userData._id
-  //    ) !== -1
-  //   ) {
-  //   }
-
   const { data } = await deleteFollowerMutation({
    variables: {
-    id: getOneBoardDatum && getOneBoardDatum.getOneBoard.author,
+    id: getOneBoardDatum && getOneBoardDatum.getOneBoard.author._id,
     userId: sessionUser.getUser.userData._id,
    },
   });
@@ -110,7 +123,7 @@ const MM_DContainer = ({ match }) => {
 
  const commentCreateHandler = async () => {
   if (!sessionStorage.getItem("login")) {
-   toast.error("로그인후 이용해주세요");
+   toast.error("로그인 후 이용해주세요");
    return;
   }
   if (inputComment.value === "") {
@@ -124,13 +137,51 @@ const MM_DContainer = ({ match }) => {
     author: sessionUser.getUser.userData._id,
    },
   });
-  console.log(data);
   if (data.createComment) {
    toast.info("성공");
+   setIsDialogOpen(!isDialogOpen);
    getCommentRefetch();
    inputComment.setValue("");
   } else {
    toast.error("실패");
+  }
+ };
+
+ const commentUpdate = async () => {
+  if (!sessionUser) {
+   toast.error("로그인 후 이용해주세요");
+  }
+  const { data } = await updateCommentMutation({
+   variables: {
+    id: commentId,
+    desc: inputDesc.value,
+   },
+  });
+  if (data.updateComment) {
+   toast.info("성공");
+   getCommentRefetch();
+   inputDesc.setValue("");
+   setIsDialogOpen(!isDialogOpen);
+  } else {
+   toast.error("실패");
+  }
+ };
+
+ const commentDelete = async (commentId) => {
+  console.log(commentId);
+  if (!sessionUser) {
+   toast.error("로그인 후 이용해주세요");
+  }
+  const { data } = await deleteCommentMutation({
+   variables: {
+    id: commentId,
+   },
+  });
+  if (data.deleteComment) {
+   toast.info("삭제 성공");
+   getCommentRefetch();
+  } else {
+   toast.error("삭제 실패");
   }
  };
 
@@ -141,13 +192,30 @@ const MM_DContainer = ({ match }) => {
   setCommentBoolean(false);
   inputComment.setValue("");
  };
+ const _isDialogOpenToggle = (comment, desc) => {
+  console.log(comment, desc);
+  setCommentId(comment);
+  inputDesc.setValue(desc);
+  setIsDialogOpen(!isDialogOpen);
+ };
+
+ const moveLinkHandler = (link) => {
+  history.push(`/${link}`);
+ };
+
+ useEffect(() => {
+  getAllBoardRefetch();
+ }, []);
 
  useEffect(() => {
   setImagePath(getOneBoardDatum && getOneBoardDatum.getOneBoard.imgPath);
+  inputDesc.setValue(getCommentDatum && getCommentDatum.getComment.desc);
  }, []);
 
  return (
   <MM_DPresenter
+   moveLinkHandler={moveLinkHandler}
+   getAllBoardDatum={getAllBoardDatum && getAllBoardDatum.getAllBoard}
    getOneBoardDatum={getOneBoardDatum && getOneBoardDatum.getOneBoard}
    getDetailUserDatum={getDetailUserDatum && getDetailUserDatum.getDetailUser}
    imagePath={imagePath}
@@ -160,6 +228,11 @@ const MM_DContainer = ({ match }) => {
    commentBoolean={commentBoolean}
    commentCreateHandler={commentCreateHandler}
    getCommentDatum={getCommentDatum && getCommentDatum.getComment}
+   inputDesc={inputDesc}
+   _isDialogOpenToggle={_isDialogOpenToggle}
+   isDialogOpen={isDialogOpen}
+   commentUpdate={commentUpdate}
+   commentDelete={commentDelete}
   ></MM_DPresenter>
  );
 };

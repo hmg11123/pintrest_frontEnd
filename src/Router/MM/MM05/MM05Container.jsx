@@ -59,7 +59,6 @@ const MM05Container = ({ match, history }) => {
     author: match.params.id,
    },
   });
-  console.log(data);
   if (data.createBoard) {
    toast.info("사진을 올리는데 성공하였습니다");
    moveLinkHandler("");
@@ -77,7 +76,6 @@ const MM05Container = ({ match, history }) => {
  //  };
 
  const selectBoxHandler = async (value) => {
-  console.log(value);
   chooseType.setValue(`${value}`);
  };
 

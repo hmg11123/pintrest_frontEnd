@@ -11,8 +11,11 @@ export const GET_ONE_BOARD = gql`
    good
    hate
    hit
-   author
-   #    boardComment
+   author {
+    _id
+    nickName
+    profileImage
+   }
   }
  }
 `;
@@ -20,6 +23,7 @@ export const GET_ONE_BOARD = gql`
 export const GET_DETAIL_USER = gql`
  query getDetailUser($id: String!) {
   getDetailUser(id: $id) {
+   _id
    nickName
    profileImage
    follower
@@ -46,7 +50,11 @@ export const GET_COMMENT = gql`
    writtenPlacer
    createdAt
    desc
-   author
+   author {
+    _id
+    profileImage
+    nickName
+   }
    good
    hate
   }
@@ -60,5 +68,33 @@ export const CREATE_COMMENT = gql`
   $author: String!
  ) {
   createComment(writtenPlacer: $writtenPlacer, desc: $desc, author: $author)
+ }
+`;
+
+export const GET_All_BOARD = gql`
+ query getAllBoard {
+  getAllBoard {
+   _id
+   type
+   title
+   imgPath
+   author {
+    _id
+    nickName
+    profileImage
+   }
+  }
+ }
+`;
+
+export const UPDATE_COMMENT = gql`
+ mutation updateComment($id: String!, $desc: String!) {
+  updateComment(id: $id, desc: $desc)
+ }
+`;
+
+export const DELETE_COMMENT = gql`
+ mutation deleteComment($id: String!) {
+  deleteComment(id: $id)
  }
 `;

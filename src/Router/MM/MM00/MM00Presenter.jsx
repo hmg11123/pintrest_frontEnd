@@ -13,9 +13,8 @@ const WhiteWrapper = styled(Wrapper)`
   height: auto;
   border-radius: 20px;
   /* position: absolute; */
-  z-index: 3;
   background-color: #ffffff;
-  opacity: 50%;
+  color: #000000;
  }
 `;
 const ImgBoxWrapper = styled(Wrapper)`
@@ -28,6 +27,12 @@ const ImgBoxWrapper = styled(Wrapper)`
   position: absolute;
  } */
 `;
+const ProFileWrapper = styled(CommenImgBox)`
+ width: 30px;
+ height: 30px;
+ border-radius: 100%;
+ background-size: cover;
+`;
 
 const MM00Presenter = ({
  getAllBoardDatum,
@@ -36,8 +41,17 @@ const MM00Presenter = ({
  hoverImgHandler,
 }) => {
  return (
-  <Wrapper>
-   <Wrapper width={"1350px"} wr={"wrap"} dr={"row"}>
+  <Wrapper dr={`row`}>
+   <Wrapper width={"13%"}></Wrapper>
+   <Wrapper
+    width={"80%"}
+    heigth={`auto`}
+    wr={"wrap"}
+    dr={"row"}
+    al={`none`}
+    ju={"none"}
+    padding={"0"}
+   >
     {getAllBoardDatum ? (
      getAllBoardDatum.length === 0 ? (
       <Wrapper>공지사항이 없습니다.</Wrapper>
@@ -50,6 +64,7 @@ const MM00Presenter = ({
          margin={"10px"}
          key={idx}
          onClick={() => moveLinkHandler(`detail/${data._id}`)}
+         padding={"0"}
         >
          <Wrapper padding={"0"}>
           <WhiteWrapper>
@@ -60,8 +75,18 @@ const MM00Presenter = ({
             src={data.imgPath}
             //    onClick={() => showWrapperHandler(
            ></CommenImgBox>
+           <Wrapper dr={"row"} ju={"flex-start"}>
+            <Wrapper padding={"0"} width={"30px"}>
+             <ProFileWrapper src={data.author.profileImage}></ProFileWrapper>
+            </Wrapper>
+            <Wrapper width={"20px"} padding={"0"} margin={"0px 0px 0px 5px"}>
+             {data.author.nickName}
+            </Wrapper>
+            <Wrapper padding={"0"} margin={"10px"} fs={"18px"}>
+             {data.title}
+            </Wrapper>
+           </Wrapper>
           </WhiteWrapper>
-          <Wrapper dr={"row"}>{data.title}</Wrapper>
          </Wrapper>
         </ImgBoxWrapper>
        );
@@ -71,6 +96,7 @@ const MM00Presenter = ({
      "loading..."
     )}
    </Wrapper>
+   <Wrapper width={"7%"}></Wrapper>
   </Wrapper>
  );
 };

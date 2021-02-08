@@ -7,7 +7,11 @@ export const GET_All_BOARD = gql`
    type
    title
    imgPath
-   author
+   author {
+    _id
+    nickName
+    profileImage
+   }
   }
  }
 `;

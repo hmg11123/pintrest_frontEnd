@@ -111,7 +111,6 @@ const MM03Container = ({ history, match }) => {
     email: JSON.parse(sessionStorage.getItem("login")).getUser.userData.email,
    },
   });
-  console.log(data);
   moveLinkHandler("chagePass");
  };
 
@@ -132,6 +131,15 @@ const MM03Container = ({ history, match }) => {
 
  const _isDialogOpenToggle = () => {
   setIsDialogOpen(!isDialogOpen);
+ };
+
+ const searchPostHandler = () => {
+  new daum.Postcode({
+   oncomplete: function (data) {
+    updateZoneCode.setValue(data.zonecode);
+    updateAddress.setValue(data.address);
+   },
+  }).open();
  };
 
  useEffect(() => {
@@ -160,7 +168,6 @@ const MM03Container = ({ history, match }) => {
    JSON.parse(sessionStorage.getItem("login")).getUser.userData.birth
   );
  }, []);
- console.log(imagePath);
  return (
   <MM03Presenter
    updateNickName={updateNickName}
@@ -181,6 +188,7 @@ const MM03Container = ({ history, match }) => {
    _isDialogOpenToggle={_isDialogOpenToggle}
    isDialogOpen={isDialogOpen}
    chageBtn={chageBtn}
+   searchPostHandler={searchPostHandler}
   ></MM03Presenter>
  );
 };

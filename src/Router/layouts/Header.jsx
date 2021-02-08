@@ -34,6 +34,17 @@ const LoginBtn = styled.div`
  }
 `;
 
+const LogoImg = styled.img`
+ width: 30px;
+ height: 30px;
+ background-color: white;
+ border-radius: 100px;
+ &:hover {
+  /* border: 6px solid gray; */
+  background-color: gray;
+ }
+`;
+
 const Header = ({ history }) => {
  const moveLinkHandler = (link) => {
   history.push(`/${link}`);
@@ -46,7 +57,7 @@ const Header = ({ history }) => {
  return (
   <Wrapper bc={`black`} color={`white`} heigth={`150px`} dr={`row`}>
    <Wrapper width={`15%`} onClick={() => moveLinkHandler("")}>
-    로고?f
+    <LogoImg src="http://src.wizad.co.kr/wizbbs/data/shopimg/A1517565275659_pinterest-logo.png"></LogoImg>
    </Wrapper>
    <Wrapper width={`50%`}>
     <SearchBox

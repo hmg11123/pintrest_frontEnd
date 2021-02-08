@@ -31,8 +31,6 @@ const MM02Container = ({ history }) => {
    },
   });
 
-  console.log(data);
-
   if (data.getUser) {
    const login = data.getUser.userData;
    if (login) {

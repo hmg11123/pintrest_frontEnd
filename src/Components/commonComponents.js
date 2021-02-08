@@ -15,6 +15,7 @@ export const Wrapper = styled.div`
  align-items: ${(props) => props.al || `center`};
  justify-content: ${(props) => props.ju || `center`};
  flex-wrap: ${(props) => props.wr || ``};
+ position: ${(props) => props.position};
 `;
 
 export const TitleWrapper = styled.div`
